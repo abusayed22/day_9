@@ -1,26 +1,29 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { pre_add_data  } from '../../redux/action/action'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import {pre_go_single} from '../../redux/action/action'
 
-function Add() {
-  const dispatch = useDispatch();
-  const [add,setAdd] = useState({
-        name:'',
-        roll:'',
-        birth:'',
-        phone:'',
-        address:''
-  })
-  const addhandle = () => {
-    dispatch(pre_add_data(add))
-    setAdd({
+function Single() {
+    const {id} = useParams();
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.crud.user);
+
+    useEffect(() => {
+        dispatch(pre_go_single(id))
+    },[])
+
+    useEffect(() => {
+        if(user) {
+            setAdd({...add && user})
+        }
+    },[])
+    const [add,setAdd] = useState({
         name:'',
         roll:'',
         birth:'',
         phone:'',
         address:''
     })
-  }
   return (
     <div style={{width:400,margin:'0 auto'}}>
       <div className="input-group mb-3">
@@ -71,9 +74,9 @@ function Add() {
           onChange={(e) => setAdd({...add,address:e.target.value})}
         />
       </div>
-      <button onClick={() => addhandle()} type="button" className="btn btn-info" style={{color:'#fff'}}>Add</button>
+      <button  type="button" className="btn btn-info" style={{color:'#fff'}}>update</button>
     </div>
   )
 }
 
-export default Add
+export default Single

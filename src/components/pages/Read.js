@@ -1,4 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { pre_delete_data, pre_get_data } from '../../redux/action/action'
+
 
 // name:'',
 //         roll:'',
@@ -6,10 +10,21 @@ import React from 'react'
 //         phone:'',
 //         address:''
 function Read() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const users = useSelector(state => state.crud.users);
+  useEffect(() => {
+    dispatch(pre_get_data())
+},[])
+ 
+
+  const deletehandler = (id) => {
+    dispatch(pre_delete_data(id))
+  }
   return (
     <div>
       <div className='container' style={{width:850}}>
-        <table class="table table-striped">
+        <table className="table table-striped">
             <thead>
                 <tr>
                 <th scope="col">Roll</th>
@@ -20,20 +35,21 @@ function Read() {
                 <th scope="col">Action</th>
                 </tr>
             </thead>
-
-            <tbody>
+          {users.map((obj) => 
+            <tbody key={obj.id}>
                 <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
+                <th scope="row">{obj.roll}</th>
+                <td>{obj.name}</td>
+                <td>{obj.birth}</td>
+                <td>{obj.phone}</td>
+                <td>{obj.address}</td>
                 <td>
-                <button type="button" class="btn btn-warning mr-2">Delete</button>
-                    <button type="button" class="btn btn-secondary">edit</button>
+                    <button onClick={() => deletehandler(obj.id)} type="button" className="btn btn-warning mr-2">Delete</button>
+                    <button onClick={() => navigate(`/single/${obj.id}`)} type="button" className="btn btn-secondary">edit</button>
                 </td>
                 </tr>
             </tbody>
+            )}
         </table>
       </div>
 
@@ -41,4 +57,4 @@ function Read() {
   )
 }
 
-export default Read
+export default Read;

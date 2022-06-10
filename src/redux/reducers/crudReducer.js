@@ -6,11 +6,30 @@ const inititalState = {
     user:{}
 }
 const crudReducer = (state = inititalState,action) => {
-    switch (action.types) {
+    switch (action.type) {
         case types.GET_DATA:
             return {
-                type:types.GET_DATA,
+                ...state,
                 users:action.payload
+            }
+            break;
+
+        case types.DELETE_DATA:
+            return {
+                ...state
+            }
+            break;
+            
+        case types.ADD_DATA:
+            return {
+                ...state
+            }
+            break;
+
+        case types.SINGLE_EDIT_STATE:
+            return {
+                ...state,
+                user:action.payload
             }
             break;
     
